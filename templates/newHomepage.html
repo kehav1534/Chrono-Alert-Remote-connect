@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <title>
+            New HomePage
+        </title>
+    </head>
+    <body>
+        <div>
+            <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
+            <div class="home-container">
+              <div class="home-container1">
+                <div class="home-container2">
+                  <form action="/logout" method="post">
+                    <button class="home-button button">
+                      <span class="home-text">
+                        <span>Log Out</span>
+                        <br />
+                      </span>
+                    </button>
+                  </form>
+                </div>
+                <div class="home-container3">
+                  <img
+                    src="https://play.teleporthq.io/static/svg/default-img.svg"
+                    alt="image"
+                    class="home-image"
+                  />
+                </div>
+                <div class="home-container4">
+                  <span class="home-text03">{{username|safe}}</span>
+                  <span class="home-text04">{{email|safe}}</span>
+                  <span class="home-text05" id="room">{{room|safe}}</span>
+                </div>
+                <div class="home-container5">
+                  <button type="button" class="home-button1 button">
+                    <span class="home-text06">
+                      <span id = "shutdown">Shut Down</span>
+                      <br />
+                    </span>
+                  </button>
+                  <button type="button" class="home-button2 button">
+                    <span class="home-text09">
+                      <span>Restart</span>
+                      <br />
+                    </span>
+                  </button>
+                  <button type="button" class="home-button3 button">
+                    <span class="home-text12">Sleep</span>
+                  </button>
+                  <button type="button" class="home-button4 button">
+                    <span class="home-text13">
+                      <span>Hibernate</span>
+                      <br />
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+          <script>
+              var socket = io('http://192.168.29.109:4000');
+              var button = document.getElementById('shutdown');
+              var roomCode = "{{room|safe}}";
+      
+      // Add a click event listener to the button
+              button.addEventListener('click', sendDataToRoom);
+      
+              function sendDataToRoom() {
+                  socket.emit("message_from_client", {event: "shutdown"});
+              }
+              function connectToSocket(){
+                var roomCode = "{{room|safe}}";
+
+                socket.emit("join_room", roomCode);
+              }
+              window.onload = connectToSocket;
+              
+          </script>
+    </body>
+</html>
